@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strings"
 	"sync"
@@ -110,7 +111,8 @@ func (e *Engine) isIncludeExt(path string) bool {
 func (e *Engine) isExcludeFile(path string) bool {
 	cleanName := cleanPath(e.config.rel(path))
 	for _, d := range e.config.Build.ExcludeFile {
-		if d == cleanName {
+		expat := regexp.MustCompile(d)
+		if expat.MatchString(cleanName) {
 			return true
 		}
 	}
